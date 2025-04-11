@@ -19,8 +19,12 @@ duration = song.getnframes() / sample_rate
 # Normalize amplitude to [-1, 1]
 raw = raw / np.max(np.abs(raw))
 
-# Detect zero crossings (sign change in signal)
-zero_crossings = np.where(np.diff(np.sign(raw)))[0]
+# Detect zero crossings
+zero_crossings = []
+
+for i in range(len(raw) - 1):
+    if (raw[i] > 0 and raw[i + 1] < 0) or (raw[i] < 0 and raw[i + 1] > 0):
+        zero_crossings.append(i)
 
 # Count zero crossings
 num_zero_crossings = len(zero_crossings)
