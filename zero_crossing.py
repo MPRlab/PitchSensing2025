@@ -21,7 +21,6 @@ raw = raw / np.max(np.abs(raw))
 
 # Detect zero crossings
 zero_crossings = []
-
 for i in range(len(raw) - 1):
     if (raw[i] > 0 and raw[i + 1] < 0) or (raw[i] < 0 and raw[i + 1] > 0):
         zero_crossings.append(i)
