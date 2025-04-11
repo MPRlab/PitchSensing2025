@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load WAV file
-song_file = "C:\\Users\\79140\\Downloads\\pluck_cropped.wav"
+song_file = "plucks\\pluck_cropped_98Hz_converted.wav"
 song = wave.open(song_file, "r")
 
 # Read audio frames
