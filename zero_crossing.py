@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from pydub import AudioSegment
 
 # Apply low-pass filter using pydub
-input_file = "plucks\\pluck_cropped_82.4Hz_converted.wav"
+input_file = "plucks\\pluck_cropped_110Hz_converted.wav"
 filtered_file = "temp_filtered.wav"
 
 # Load and filter
