@@ -10,7 +10,7 @@ song = wave.open(song_file, "r")
 raw_bytes = song.readframes(-1)
 
 # Convert bytes to NumPy array (adjust dtype if needed — try int16 or int32 based on file)
-raw = np.frombuffer(raw_bytes, dtype=np.int16)  # Try int32 if this looks weird
+raw = np.frombuffer(raw_bytes, dtype=np.int16)
 
 # Get sample rate and duration
 sample_rate = song.getframerate()
