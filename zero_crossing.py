@@ -47,6 +47,7 @@ for filename in os.listdir(folder_path):
         print(f"Estimated Frequency: {estimated_frequency:.2f} Hz")
 
         # Plot the waveform and highlight zero crossings
+        """
         plt.figure(figsize=(12, 4))
         plt.plot(raw, label="Waveform", color="blue", alpha=0.7)
         plt.scatter(zero_crossings, raw[zero_crossings], color="red", label="Zero Crossings", s=10)
@@ -57,3 +58,4 @@ for filename in os.listdir(folder_path):
         plt.legend()
         plt.tight_layout()
         plt.show()
+        """
