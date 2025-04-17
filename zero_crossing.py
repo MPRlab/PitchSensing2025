@@ -1,6 +1,7 @@
 import wave
 import numpy as np
 import matplotlib.pyplot as plt
+from pydub import AudioSegment
 
 # Load WAV file
 song_file = "plucks\\pluck_cropped_82.4Hz_converted.wav"
