@@ -55,7 +55,7 @@ for filename in os.listdir(folder_path):
 
         # --- Apply a low-pass filter to clean up the signal ---
         song = AudioSegment.from_wav(input_path)
-        filtered = song.low_pass_filter(500)
+        filtered = song.low_pass_filter(500)  # See https://github.com/jiaaro/pydub/blob/master/pydub/effects.py#L222
         filtered.export(filtered_path, format="wav")  # Save to temporary file
 
         # Analyze the filtered audio for zero-crossings
