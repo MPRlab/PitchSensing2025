@@ -4,75 +4,69 @@ import os
 import pandas as pd
 from pydub import AudioSegment
 
-# Path to the folder containing audio clips of plucked sounds
+# Path to the folder containing pluck audio samples
 folder_path = "plucks"
 
-# We'll collect results in this list, each entry will become a row in our final Excel table
+# Final data will be stored here before being written to Excel
 results = []
-
 
 # --- Utility function ---
 def zero_crossings_in_array(arr):
     """
-    Detects zero-crossings in a 1D array of audio amplitude values.
-    A zero-crossing is counted when the waveform transitions from positive to negative or vice versa.
+    Counts zero-crossings in a 1D waveform array (amplitude values).
+    A zero-crossing occurs when the waveform moves from positive to negative or vice versa.
     """
     zero_crossings = []
-    for i in range(len(arr - 1)):
+    for i in range(len(arr) - 1):
         if (arr[i] > 0 and arr[i + 1] < 0) or (arr[i] < 0 and arr[i + 1] > 0):
             zero_crossings.append(i)
     return zero_crossings
 
-
-# --- Main Processing Loop ---
-# We go through every file in the folder that includes "converted" in its name
+# --- Main processing loop ---
+# Iterate through all WAV files that include "converted" in their filename
 for filename in os.listdir(folder_path):
     if "converted" in filename and filename.endswith(".wav"):
         input_path = os.path.join(folder_path, filename)
-        filtered_path = "temp_filtered.wav"  # Temporary output after low-pass filtering
+        filtered_path = "temp_filtered.wav"  # Temporary output path for filtered audio
 
-        # Attempt to extract the "true" frequency embedded in the filename
-        # For example: "pluck_cropped_82.4Hz_converted.wav" -> 82.4
+        # Extract the true frequency from the filename (e.g. "pluck_cropped_82.4Hz_converted.wav")
         try:
-            freq_part = filename.split("_")[2]  # Assumes filename format is consistent
-            true_freq = float(freq_part.replace("Hz", ""))
+            freq_part = filename.split("_")[2]  # Pull out "82.4Hz"
+            true_freq = float(freq_part.replace("Hz", ""))  # Convert to float
         except:
-            true_freq = None  # Fallback if parsing fails
+            true_freq = None  # Leave as None if parsing fails
 
-        # --- Analyze original audio for zero-crossings ---
+        # --- Analyze the original (unfiltered) audio ---
         with wave.open(input_path, "r") as song_wav:
-            raw_bytes = song_wav.readframes(-1)  # Read all frame data
+            raw_bytes = song_wav.readframes(-1)  # Read all samples
             sample_rate = song_wav.getframerate()
             duration = song_wav.getnframes() / sample_rate  # Duration in seconds
 
-        # Convert audio bytes to 16-bit numpy array and normalize amplitude
-        raw = np.frombuffer(raw_bytes, dtype=np.int16)
-        raw = raw / np.max(np.abs(raw))
+        raw = np.frombuffer(raw_bytes, dtype=np.int16)  # Convert bytes to waveform
+        raw = raw / np.max(np.abs(raw))  # Normalize
 
-        # Count zero crossings in the raw (unfiltered) signal
-        zc_raw = sum((raw[:-1] > 0) & (raw[1:] < 0) | (raw[:-1] < 0) & (raw[1:] > 0))
-        freq_zc = (zc_raw / duration) / 2  # Basic frequency estimation via zero-crossing count
+        # Use the utility function to count zero-crossings
+        zc_raw = len(zero_crossings_in_array(raw))
+        freq_zc = (zc_raw / duration) / 2  # Estimate frequency
 
-        # --- Apply a low-pass filter to clean up the signal ---
+        # --- Low-pass filter the audio to isolate dominant frequency content ---
         song = AudioSegment.from_wav(input_path)
-        filtered = song.low_pass_filter(500)  # See https://github.com/jiaaro/pydub/blob/master/pydub/effects.py#L222
-        filtered.export(filtered_path, format="wav")  # Save to temporary file
+        filtered = song.low_pass_filter(500)
+        filtered.export(filtered_path, format="wav")
 
-        # Analyze the filtered audio for zero-crossings
+        # Load and analyze the filtered audio
         with wave.open(filtered_path, "r") as song_wav:
             raw_bytes_filt = song_wav.readframes(-1)
             sample_rate_filt = song_wav.getframerate()
             duration_filt = song_wav.getnframes() / sample_rate_filt
 
-        # Convert filtered audio to array and normalize
         raw_filt = np.frombuffer(raw_bytes_filt, dtype=np.int16)
-        raw_filt = raw_filt / np.max(np.abs(raw_filt))
+        raw_filt = raw_filt / np.max(np.abs(raw_filt))  # Normalize
 
-        # Count zero crossings in the filtered signal
-        zc_filt = sum((raw_filt[:-1] > 0) & (raw_filt[1:] < 0) | (raw_filt[:-1] < 0) & (raw_filt[1:] > 0))
-        freq_zc_filt = (zc_filt / duration_filt) / 2
+        zc_filt = len(zero_crossings_in_array(raw_filt))
+        freq_zc_filt = (zc_filt / duration_filt) / 2  # Estimate freq from filtered waveform
 
-        # --- Store results for this file ---
+        # --- Save this file's analysis as a row in the results table ---
         results.append({
             "Filename": filename,
             "Frequency (Hz)": true_freq,
@@ -81,8 +75,8 @@ for filename in os.listdir(folder_path):
             "Audio duration (s)": round(duration, 4)
         })
 
-# --- Export all results as an Excel spreadsheet ---
+# --- Write everything to a spreadsheet ---
 df = pd.DataFrame(results)
 df.to_excel("tables\\zero_crossings_auto_generated_table.xlsx", index=False)
 
-print("✅ Table saved as 'zero_crossings_auto_generated_table.xlsx'")
+print("Table saved as 'zero_crossings_auto_generated_table.xlsx'")
