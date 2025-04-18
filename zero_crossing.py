@@ -11,7 +11,7 @@ folder_path = "plucks"
 results = []
 
 
-# --- Utility function ---
+# --- Utility functions ---
 def zero_crossings_in_array(arr):
     """
     Counts zero-crossings in a 1D waveform array (amplitude values).
@@ -20,6 +20,18 @@ def zero_crossings_in_array(arr):
     zero_crossings = []
     for i in range(len(arr) - 1):
         if (arr[i] > 0 and arr[i + 1] < 0) or (arr[i] < 0 and arr[i + 1] > 0):
+            zero_crossings.append(i)
+    return zero_crossings
+
+
+def zero_crossings_in_array_filtered(arr):
+    """
+    Counts zero-crossings in a 1D waveform array (amplitude values).
+    A zero-crossing occurs when the waveform moves from positive to negative or vice versa.
+    """
+    zero_crossings = []
+    for i in range(len(arr) - 1):
+        if (arr[i] > 0.05 and arr[i + 1] < -0.05) or (arr[i] < -0.05 and arr[i + 1] > 0.05):
             zero_crossings.append(i)
     return zero_crossings
 
