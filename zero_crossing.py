@@ -10,6 +10,7 @@ folder_path = "plucks"
 # Final data will be stored here before being written to Excel
 results = []
 
+
 # --- Utility function ---
 def zero_crossings_in_array(arr):
     """
@@ -21,6 +22,7 @@ def zero_crossings_in_array(arr):
         if (arr[i] > 0 and arr[i + 1] < 0) or (arr[i] < 0 and arr[i + 1] > 0):
             zero_crossings.append(i)
     return zero_crossings
+
 
 # --- Main processing loop ---
 # Iterate through all WAV files that include "converted" in their filename
