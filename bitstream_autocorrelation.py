@@ -4,7 +4,7 @@ import math
 from matplotlib.pyplot import figure, show
 
 # --- Load WAV file ---
-file_path = "plucks/pluck_cropped_82.4Hz_converted.wav"
+file_path = "plucks/pluck_cropped_87.31Hz_converted.wav"
 
 with wave.open(file_path, 'rb') as wf:
     n_channels = wf.getnchannels()
@@ -22,6 +22,9 @@ raw_audio = np.frombuffer(raw_bytes, dtype=dtype)
 # If stereo, take only one channel
 if n_channels > 1:
     raw_audio = raw_audio[::n_channels]
+
+# --- Crop to first 1000 samples ---
+raw_audio = raw_audio[:1000]
 
 # Normalize audio
 audio = raw_audio / np.max(np.abs(raw_audio))
@@ -82,8 +85,8 @@ ax3.set_ylim((-5, max(results) + 10))
 ax3.set_title("Autocorrelation (XOR of Triggers)")
 
 # --- Estimate Frequency ---
-skip = 20  # number of samples to skip (tweak if needed)
-search_range = results[skip:leng]  # look only after some initial entries
+skip = 20  # number of samples to skip
+search_range = results[skip:leng]
 notch_index_relative = np.argmin(search_range)
 notch_index = notch_index_relative + skip
 
@@ -91,6 +94,5 @@ estimated_period = notch_index / framerate
 estimated_frequency = 1 / estimated_period if estimated_period > 0 else 0
 
 print(f"Estimated Frequency: {estimated_frequency:.2f} Hz")
-
 
 show()
