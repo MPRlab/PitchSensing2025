@@ -36,6 +36,12 @@ def zero_crossings_in_array_filtered(arr):
 
 
 def estimate_freq_via_xor_trigger(file_path, num_samples=1000):
+    # ==============================================================================
+    #  Copyright (c) 2014-2018 Joel de Guzman. All rights reserved.
+    #
+    #  Distributed under the Boost Software License, Version 1.0. (See accompanying
+    #  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+    # ==============================================================================
     """
     Estimates frequency using a binary trigger and XOR autocorrelation on the first few samples.
     Returns estimated frequency in Hz.
@@ -75,16 +81,16 @@ def estimate_freq_via_xor_trigger(file_path, num_samples=1000):
     def count_ones(l):
         return sum(1 for e in l if e)
 
-    results = []
+    results_autocorr = []
     leng = math.floor(len(trig) / 2)
     for i in range(leng):
         x = [a ^ b for a, b in zip(trig[0:leng], trig[i:i + leng])]
-        results.append(count_ones(x))
-    results.extend(results)
+        results_autocorr.append(count_ones(x))
+    results_autocorr.extend(results_autocorr)
 
     # Find the first notch (minimum) in correlation after skipping initial overlap
     skip = 20
-    search_range = results[skip:leng]
+    search_range = results_autocorr[skip:leng]
     if not search_range:
         return 0.0
     notch_index_relative = np.argmin(search_range)
