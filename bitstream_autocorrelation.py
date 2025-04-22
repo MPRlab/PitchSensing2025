@@ -2,6 +2,9 @@ import wave
 import numpy as np
 import math
 from matplotlib.pyplot import figure, show
+import time
+
+start_time = time.time()  # record start time
 
 # --- Load WAV file ---
 file_path = "plucks/pluck_cropped_87.31Hz_converted.wav"
@@ -94,5 +97,7 @@ estimated_period = notch_index / framerate
 estimated_frequency = 1 / estimated_period if estimated_period > 0 else 0
 
 print(f"Estimated Frequency: {estimated_frequency:.2f} Hz")
+
+print(f"Time to estimate: {time.time() - start_time} seconds")
 
 show()
