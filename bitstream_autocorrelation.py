@@ -15,8 +15,8 @@ import time
 To enhance the accuracy of the frequency estimator, we can use a Genetic Algorithm (GA) to optimize the following parameters (genes):
 
 Genes:
-- Lower threshold: the minimum signal value to trigger a binary 0-to-1 transition
-- Upper threshold: the maximum signal value to allow a trigger back to 0
+- Lower threshold (-0.1 now)
+- Upper threshold (0.1 now)
 - Number of samples to skip: how far to skip when searching for the first autocorrelation notch
 - Number of samples to consider: how much of the waveform to use for analysis (e.g., 800 vs 1000 samples)
 
