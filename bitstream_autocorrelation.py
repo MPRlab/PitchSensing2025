@@ -11,6 +11,16 @@ import time
 #  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 # ==============================================================================
 
+"""
+Something that could be implemented to enhance accuracy is a genetic algorithm with the following genes:
+- Lower threshold
+- Upper threshold
+- Number of samples to skip
+- Number of samples to consider
+
+We will need to collect more data points to evaluate fitness and potentially add noise artificially
+"""
+
 start_time = time.time()  # record start time
 
 # --- Load WAV file ---
