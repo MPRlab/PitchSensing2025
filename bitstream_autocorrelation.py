@@ -12,13 +12,19 @@ import time
 # ==============================================================================
 
 """
-Something that could be implemented to enhance accuracy is a genetic algorithm with the following genes:
+Something that could be implemented to enhance accuracy is a genetic algorithm with the following parameters:
+
+Genes:
 - Lower threshold
 - Upper threshold
 - Number of samples to skip
 - Number of samples to consider
 
+Fitness function:
+- 1 / (1.0 + {sum of squared error for every data point})
+
 We will need to collect more data points to evaluate fitness and potentially add noise artificially
+
 """
 
 start_time = time.time()  # record start time
