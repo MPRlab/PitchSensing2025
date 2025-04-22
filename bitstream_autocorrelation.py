@@ -12,19 +12,28 @@ import time
 # ==============================================================================
 
 """
-Something that could be implemented to enhance accuracy is a genetic algorithm with the following parameters:
+To enhance the accuracy of the frequency estimator, we can use a Genetic Algorithm (GA) to optimize the following parameters (genes):
 
 Genes:
-- Lower threshold
-- Upper threshold
-- Number of samples to skip
-- Number of samples to consider
+- Lower threshold: the minimum signal value to trigger a binary 0-to-1 transition
+- Upper threshold: the maximum signal value to allow a trigger back to 0
+- Number of samples to skip: how far to skip when searching for the first autocorrelation notch
+- Number of samples to consider: how much of the waveform to use for analysis (e.g., 800 vs 1000 samples)
+
+These genes can be adjusted automatically by the GA to minimize estimation error.
 
 Fitness function:
-- 1 / (1.0 + {sum of squared error for every data point})
+- 1 / (1.0 + total squared error across multiple test samples)
+- The goal is to find gene settings that result in the smallest difference between estimated and true frequency
 
-We will need to collect more data points to evaluate fitness and potentially add noise artificially
+To evaluate the fitness:
+- Run the frequency estimator with a given set of gene values
+- Compare estimated frequency to the true known value (e.g., extracted from the filename)
+- Repeat this over multiple .wav files to avoid overfitting to a single case
 
+For better results:
+- Consider adding artificial noise to some inputs
+- Use early portions of the waveform (attack phase) where pitch is most stable
 """
 
 start_time = time.time()  # record start time
