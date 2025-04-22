@@ -16,6 +16,14 @@ start_time = time.time()  # record start time
 # --- Load WAV file ---
 file_path = "plucks/pluck_cropped_87.31Hz_converted.wav"
 
+# Extract true frequency from filename, e.g. "pluck_cropped_98Hz_converted.wav"
+try:
+    freq_part = file_path.split("_")[2]
+    true_freq = float(freq_part.replace("Hz", ""))
+except Exception as e:
+    print(e)
+    true_freq = None
+
 with wave.open(file_path, 'rb') as wf:
     n_channels = wf.getnchannels()
     sampwidth = wf.getsampwidth()
@@ -23,7 +31,7 @@ with wave.open(file_path, 'rb') as wf:
     n_frames = wf.getnframes()
     raw_bytes = wf.readframes(n_frames)
 
-print(framerate)
+# print(framerate)  # debugging
 
 # Convert bytes to numpy array
 dtype = np.int16 if sampwidth == 2 else np.uint8
@@ -104,6 +112,8 @@ estimated_period = notch_index / framerate
 estimated_frequency = 1 / estimated_period if estimated_period > 0 else 0
 
 print(f"Estimated Frequency: {estimated_frequency:.2f} Hz")
+
+print(f"True frequency: {true_freq:.2f} Hz")
 
 print(f"Time to estimate: {time.time() - start_time} seconds")
 
