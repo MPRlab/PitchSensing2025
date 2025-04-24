@@ -17,7 +17,7 @@ To enhance the accuracy of the frequency estimator, we can use a genetic algorit
 Genes:
 - Lower threshold (-0.1 now)
 - Upper threshold (0.1 now)
-- Number of samples to skip: how far to skip when searching for the first autocorrelation notch (20 now)
+- Number of samples to skip: how far to skip when searching for the first autocorrelation notch (skip now)
 - Number of samples to consider: how much of the waveform to use for analysis (e.g., 800 vs 1000 samples; 1000 now)
 
 These genes can be adjusted automatically by the GA to minimize estimation error.
@@ -40,9 +40,10 @@ For better results:
 start_time = time.time()  # record start time
 
 # --- Load WAV file ---
-file_path = "plucks/pluck_cropped_87.31Hz_converted.wav"
+file_path = "plucks/pluck_cropped_82.4Hz_converted.wav"
 
 # Extract true frequency from filename, e.g. "pluck_cropped_98Hz_converted.wav"
+#                               or "artificialpluck_cropped_80Hz_converted.wav"
 try:
     freq_part = file_path.split("_")[2]
     true_freq = float(freq_part.replace("Hz", ""))
@@ -129,7 +130,7 @@ ax3.set_ylim((-5, max(results) + 10))
 ax3.set_title("Autocorrelation (XOR of Triggers)")
 
 # --- Estimate Frequency ---
-skip = 20  # number of samples to skip
+skip = 50  # number of samples to skip
 search_range = results[skip:leng]
 notch_index_relative = np.argmin(search_range)
 notch_index = notch_index_relative + skip

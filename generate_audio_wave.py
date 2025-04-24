@@ -24,7 +24,7 @@ def generate_guitar_waveform(frequency=440.0, sample_rate=44100, duration=2.0, h
     waveform_int16 = np.int16(waveform * 32767)
 
     # Save WAV file
-    filename = f"plucks/artificialpluck_cropped_{int(frequency)}Hz.wav"
+    filename = f"plucks/artificialpluck_cropped_{int(frequency)}Hz_converted.wav"
     write(filename, sample_rate, waveform_int16)
 
     # Plot waveform
@@ -57,7 +57,7 @@ def generate_guitar_waveform_noisy(frequency=440.0, duration=2.0, sample_rate=44
 
     # Save as WAV file
     os.makedirs("plucks", exist_ok=True)
-    filename = f"plucks/artificialplucknoisy_cropped_{int(frequency)}Hz.wav"
+    filename = f"plucks/artificialplucknoisy_cropped_{int(frequency)}Hz_converted.wav"
     write(filename, sample_rate, (waveform * 32767).astype(np.int16))
 
     # Plot
@@ -71,5 +71,5 @@ def generate_guitar_waveform_noisy(frequency=440.0, duration=2.0, sample_rate=44
 
 
 # Generate for N Hz with harmonics calculated from base
-generate_guitar_waveform(frequency=400.0)
-generate_guitar_waveform_noisy(frequency=400.0)
+generate_guitar_waveform(frequency=80.0)
+generate_guitar_waveform_noisy(frequency=80.0)
