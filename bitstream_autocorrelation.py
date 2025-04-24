@@ -40,7 +40,7 @@ For better results:
 start_time = time.time()  # record start time
 
 # --- Load WAV file ---
-file_path = "plucks/pluck_cropped_98Hz_converted.wav"
+file_path = "plucks/artificialpluck_cropped_400Hz_converted.wav"
 
 # Extract true frequency from filename, e.g. "pluck_cropped_98Hz_converted.wav"
 #                               or "artificialpluck_cropped_80Hz_converted.wav"
@@ -139,6 +139,8 @@ estimated_period = notch_index / framerate
 estimated_frequency = 1 / estimated_period if estimated_period > 0 else 0
 
 print(f"Estimated Frequency: {estimated_frequency:.2f} Hz")
+
+print(f"Notch index: {notch_index}")
 
 print(f"True frequency: {true_freq:.2f} Hz")
 
