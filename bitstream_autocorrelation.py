@@ -40,7 +40,7 @@ For better results:
 start_time = time.time()  # record start time
 
 # --- Load WAV file ---
-file_path = "plucks/artificialplucknoisy_cropped_400Hz_converted.wav"
+file_path = "plucks/artificialplucknoisy_cropped_80Hz_converted.wav"
 
 # Extract true frequency from filename, e.g. "pluck_cropped_98Hz_converted.wav"
 #                               or "artificialpluck_cropped_80Hz_converted.wav"
