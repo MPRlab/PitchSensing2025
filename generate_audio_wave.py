@@ -8,7 +8,7 @@ os.makedirs("plucks", exist_ok=True)
 
 
 def generate_guitar_waveform(frequency=440.0, sample_rate=44100, duration=2.0, harmonics=[1, 2, 3, 4],
-                             amplitudes=[1.0, 0.8, 0.4, 0.2], decay_rate=3.0):
+                             amplitudes=[1.0, 0.9, 0.4, 0.2], decay_rate=3.0):
     t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
     waveform = np.zeros_like(t)
 
@@ -39,7 +39,7 @@ def generate_guitar_waveform(frequency=440.0, sample_rate=44100, duration=2.0, h
 
 # Function to generate a realistic artificial pluck with noise
 def generate_guitar_waveform_noisy(frequency=440.0, duration=2.0, sample_rate=44100,
-                                   harmonics=[1, 2, 3, 4], amplitudes=[1.0, 0.8, 0.4, 0.2],
+                                   harmonics=[1, 2, 3, 4], amplitudes=[1.0, 0.9, 0.4, 0.2],
                                    decay_rate=3.0, noise_level=0.05):
     t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
     waveform = np.zeros_like(t)
