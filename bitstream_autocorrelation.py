@@ -12,7 +12,7 @@ import time
 # ==============================================================================
 
 """
-To enhance the accuracy of the frequency estimator, we can use a genetic algorithm to optimize the following parameters (genes):
+To enhance the accuracy of the frequency estimator, we can use a genetic algorithm with the following parameters:
 
 Genes:
 - Lower threshold (-0.1 now)
