@@ -140,6 +140,8 @@ estimated_frequency = 1 / estimated_period if estimated_period > 0 else 0
 
 print(f"Estimated Frequency: {estimated_frequency:.2f} Hz")
 
+print(f"Notch index: {notch_index}")
+
 print(f"True frequency: {true_freq:.2f} Hz")
 
 print(f"Time to estimate: {time.time() - start_time} seconds")
