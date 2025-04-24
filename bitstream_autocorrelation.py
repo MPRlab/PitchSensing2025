@@ -129,28 +129,16 @@ ax3.grid(True)
 ax3.set_ylim((-5, max(results) + 10))
 ax3.set_title("Autocorrelation (XOR of Triggers)")
 
-# --- Estimate frequency using global-min-close notches ---
-skip = 50
-min_range = results[skip:leng]
-global_min = min(min_range)
+# --- Estimate Frequency ---
+skip = 50  # number of samples to skip
+search_range = results[skip:leng]
+notch_index_relative = np.argmin(search_range)
+notch_index = notch_index_relative + skip
 
-threshold = 3  # within 3 units of the global min is considered a notch
-notches = [i + skip for i, val in enumerate(min_range) if abs(val - global_min) <= threshold]
+estimated_period = notch_index / framerate
+estimated_frequency = 1 / estimated_period if estimated_period > 0 else 0
 
-if len(notches) >= 2:
-    notch_distances = [notches[i + 1] - notches[i] for i in range(len(notches) - 1)]
-    avg_notch_distance = sum(notch_distances) / len(notch_distances)
-
-    estimated_period = avg_notch_distance / framerate
-    estimated_frequency = 1 / estimated_period if estimated_period > 0 else 0
-
-    print(f"Estimated Frequency (near-global-min notches): {estimated_frequency:.2f} Hz")
-    print(f"Global min: {global_min}, Threshold: {threshold}")
-    print(f"Notch indices: {notches}")
-    print(f"Average notch distance: {avg_notch_distance:.2f} samples")
-else:
-    estimated_frequency = 0
-    print("Not enough valid notches found to estimate frequency.")
+print(f"Estimated Frequency: {estimated_frequency:.2f} Hz")
 
 print(f"True frequency: {true_freq:.2f} Hz")
 
