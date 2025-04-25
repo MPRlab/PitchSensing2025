@@ -72,4 +72,4 @@ def generate_guitar_waveform_noisy(frequency=440.0, duration=2.0, sample_rate=44
 
 # Generate for N Hz with harmonics calculated from base
 # generate_guitar_waveform(frequency=120.0, amplitudes=[1.0, 0, 0, 0])  # Plain sine wave
-# generate_guitar_waveform_noisy(frequency=80.0, noise_level=0.1)
+generate_guitar_waveform_noisy(frequency=80.0, noise_level=0.1)
