@@ -92,9 +92,9 @@ class zero_cross:
         self.y = 0
 
     def __call__(self, s):
-        if s < -0.1:
+        if s < -0.04:  # Default: -0.1
             self.y = 0
-        elif s > 0.1:
+        elif s > 0.25:  # Default: 0.1
             self.y = 1
         return self.y
 
