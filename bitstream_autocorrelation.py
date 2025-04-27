@@ -23,7 +23,7 @@ Genes:
 These genes can be adjusted automatically by the GA to minimize estimation error.
 
 Fitness function:
-- 1 / (1.0 + total squared error across multiple test samples)
+- 1 / (1.0 + total squared error across multiple test samples to penalize outliers)
 - A maximum allowed time could also be considered
 - The goal is to find gene settings that result in the smallest difference between estimated and true frequency
 
