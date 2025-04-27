@@ -1,1 +1,3 @@
-This folder will contain raw string sound samples
+This folder will contain raw string sound samples.
+
+WARNING: Some recordings will have multiple plucks in them. Only consider the first few seconds of the recording
