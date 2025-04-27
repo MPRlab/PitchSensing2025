@@ -3,8 +3,8 @@ import soundfile as sf
 import os
 
 # Define paths
-input_path = os.path.expanduser("~/Downloads/pluck_cropped_98Hz.wav")
-output_path = os.path.expanduser("~/Downloads/pluck_cropped_98Hz_converted.wav")
+input_path = os.path.expanduser("plucks/pluck_cropped_212Hz_converted.wav")
+output_path = os.path.expanduser("plucks/pluck_cropped_212Hz_converted.wav")
 
 # Load original audio
 data, sr = librosa.load(input_path, sr=None)
