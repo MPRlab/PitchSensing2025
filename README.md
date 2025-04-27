@@ -7,6 +7,8 @@ This project analyzes a folder of `.wav` audio files (specifically plucked sound
 
 It saves the analysis results into an Excel spreadsheet for easy comparison with the known ("true") frequencies.
 
+The project also includes a genetic algorithm setup used to tune bitstream autocorrelation parameters (bitstream_autocorrelation_genetic_tuning.py)
+
 ---
 
 ## How It Works
@@ -65,6 +67,7 @@ pip install numpy pandas pydub
 | `plucks/`           | Folder containing input `.wav` files       |
 | `tables/`           | Output folder where results Excel file will be saved |
 | `frequency_estimator.py`    | Main processing and analysis code          |
+| `bitstream_autocorrelation_genetic_tuning.py` | Genetic algorithm used to tune the autocorrelation algorithm |
 
 ---
 
