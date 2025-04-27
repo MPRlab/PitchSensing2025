@@ -138,6 +138,12 @@ print(f"  High Threshold: {best_high_thresh}")
 print(f"  Samples to Skip: {int(best_samples_to_skip)}")
 print(f"  Number of Samples: {int(best_num_samples)}")
 
+print(f"Default Params:")
+print(f"  Low Threshold: {-0.1}")
+print(f"  High Threshold: {0.1}")
+print(f"  Samples to Skip: {20}")
+print(f"  Number of Samples: {1000}")
+
 # --- Collect results ---
 untuned_estimates = []
 tuned_estimates = []
