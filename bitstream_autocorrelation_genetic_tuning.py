@@ -1,26 +1,15 @@
 import wave
 import numpy as np
 import os
-import pandas as pd
-from pydub import AudioSegment
+import pygad  # For the genetic algorithm
 import math
 
 # Folder containing the input .wav files
 folder_path = "plucks"
-results = []  # List to store results for each file
 
 
-def estimate_freq_via_xor_trigger(file_path, num_samples=1000):
-    # ==============================================================================
-    #  Copyright (c) 2014-2018 Joel de Guzman. All rights reserved.
-    #
-    #  Distributed under the Boost Software License, Version 1.0. (See accompanying
-    #  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-    # ==============================================================================
-    """
-    Estimates frequency using a binary trigger and XOR autocorrelation on the first few samples.
-    Returns estimated frequency in Hz.
-    """
+# ----------------- Core Estimator -----------------
+def estimate_freq_via_xor_trigger(file_path, low_thresh=-0.1, high_thresh=0.1, num_samples=1000, samples_to_skip=20):
     with wave.open(file_path, 'rb') as wf:
         n_channels = wf.getnchannels()
         sampwidth = wf.getsampwidth()
@@ -37,22 +26,20 @@ def estimate_freq_via_xor_trigger(file_path, num_samples=1000):
     raw_audio = raw_audio[:num_samples]
     audio = raw_audio / np.max(np.abs(raw_audio))
 
-    # Binary trigger
     class zero_cross:
         def __init__(self):
             self.y = 0
 
         def __call__(self, s):
-            if s < -0.1:
+            if s < low_thresh:
                 self.y = 0
-            elif s > 0.1:
+            elif s > high_thresh:
                 self.y = 1
             return self.y
 
     zc = zero_cross()
     trig = [zc(s) for s in audio]
 
-    # XOR autocorrelation
     def count_ones(l):
         return sum(1 for e in l if e)
 
@@ -63,8 +50,7 @@ def estimate_freq_via_xor_trigger(file_path, num_samples=1000):
         results_autocorr.append(count_ones(x))
     results_autocorr.extend(results_autocorr)
 
-    # Find the first notch (minimum) in correlation after skipping initial overlap
-    skip = 20
+    skip = samples_to_skip
     search_range = results_autocorr[skip:leng]
     if not search_range:
         return 0.0
@@ -77,32 +63,73 @@ def estimate_freq_via_xor_trigger(file_path, num_samples=1000):
     return estimated_frequency
 
 
-# --- Main processing loop over all WAV files in the folder ---
+# ----------------- Fitness Function -----------------
+# Pre-load the dataset once so GA runs faster
+test_files = []
 for filename in os.listdir(folder_path):
-    # Only consider real samples (not generated)
     if "converted" in filename and filename.endswith(".wav") and "artificial" not in filename:
         input_path = os.path.join(folder_path, filename)
-        filtered_path = "temp_filtered.wav"  # Temporary file for low-pass filtered audio
-
-        # Extract true frequency from filename, e.g. "pluck_cropped_98Hz_converted.wav"
         try:
             freq_part = filename.split("_")[2]
             true_freq = float(freq_part.replace("Hz", ""))
-        except:
-            true_freq = None
-
-        # --- Load original (unfiltered) audio ---
-        with wave.open(input_path, "r") as song_wav:
-            raw_bytes = song_wav.readframes(-1)
-            sample_rate = song_wav.getframerate()
-            duration = song_wav.getnframes() / sample_rate
-
-        # Convert audio bytes to numpy array and normalize
-        raw = np.frombuffer(raw_bytes, dtype=np.int16)
-        raw = raw / np.max(np.abs(raw))  # Normalize to [-1, 1]
-
-        # Estimate frequency using XOR autocorrelation method
-        freq_xor = estimate_freq_via_xor_trigger(input_path)
-        print(freq_xor)
+            test_files.append((input_path, true_freq))
+        except Exception as e:
+            print("Error encountered: {e}")
+            continue
 
 
+def fitness_func(ga_instance, solution, solution_idx):
+    low_thresh, high_thresh, samples_to_skip, num_samples = solution
+
+    total_error = 0.0
+
+    for file_path, true_freq in test_files:
+        est_freq = estimate_freq_via_xor_trigger(
+            file_path,
+            low_thresh=low_thresh,
+            high_thresh=high_thresh,
+            samples_to_skip=int(samples_to_skip),
+            num_samples=int(num_samples)
+        )
+        total_error += (est_freq - true_freq) ** 2
+
+    fitness = 1.0 / (1.0 + total_error)  # Lower error = higher fitness
+    return fitness
+
+# ----------------- pygad Setup -----------------
+gene_space = [
+    {'low': -0.2, 'high': -0.0},    # low_thresh
+    {'low': 0.1,  'high': 0.4},    # high_thresh
+    {'low': 5,    'high': 100},    # samples_to_skip
+    {'low': 500,  'high': 2000}    # num_samples
+]
+
+ga_instance = pygad.GA(
+    num_generations=50,
+    num_parents_mating=5,
+    fitness_func=fitness_func,
+    sol_per_pop=10,
+    num_genes=4,
+    gene_space=gene_space,
+    parent_selection_type="rank",
+    crossover_type="single_point",
+    mutation_type="random",
+    mutation_percent_genes=50
+)
+
+# ----------------- Run GA -----------------
+ga_instance.run()
+
+# ----------------- Results -----------------
+solution, solution_fitness, solution_idx = ga_instance.best_solution()
+print(f"Best Solution: {solution}")
+print(f"Fitness of Best Solution: {solution_fitness}")
+
+best_low_thresh, best_high_thresh, best_samples_to_skip, best_num_samples = solution
+print(f"Best Params:")
+print(f"  Low Threshold: {best_low_thresh}")
+print(f"  High Threshold: {best_high_thresh}")
+print(f"  Samples to Skip: {int(best_samples_to_skip)}")
+print(f"  Number of Samples: {int(best_num_samples)}")
+
+ga_instance.plot_fitness()
