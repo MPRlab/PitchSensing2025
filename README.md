@@ -5,6 +5,8 @@ This project analyzes a folder of `.wav` audio files (specifically plucked sound
 - Zero-crossing counting after low-pass filtering
 - XOR-based bitstream autocorrelation
 
+### We have found that bitstream autocorrelation is the most effective explored method for real-time audio frequency estimation.
+
 It saves the analysis results into an Excel spreadsheet for easy comparison with the known ("true") frequencies.
 
 The project also includes a genetic algorithm setup used to tune bitstream autocorrelation parameters (bitstream_autocorrelation_genetic_tuning.py)
