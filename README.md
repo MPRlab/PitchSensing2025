@@ -1,11 +1,13 @@
+### TL;DR: We have found that bitstream autocorrelation is the most effective explored method for real-time audio frequency estimation.
+
+### For list of things to do, check TODO.md
+
 # Frequency Estimation from Audio Files
 
 This project analyzes a folder of `.wav` audio files (specifically plucked sounds) and estimates their fundamental frequencies using multiple methods:
 - Basic zero-crossing counting
 - Zero-crossing counting after low-pass filtering
 - XOR-based bitstream autocorrelation
-
-### We have found that bitstream autocorrelation is the most effective explored method for real-time audio frequency estimation.
 
 It saves the analysis results into an Excel spreadsheet for easy comparison with the known ("true") frequencies.
 
