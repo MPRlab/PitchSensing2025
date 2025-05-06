@@ -21,6 +21,7 @@ The project also includes a genetic algorithm setup used to tune bitstream autoc
 
 3. **XOR Autocorrelation**  
    Binarizes the audio signal using a basic threshold and computes an XOR-based autocorrelation. Finds the first minimum in the result to estimate the period and thus the frequency.
+   For more information, see [Joel de Guzman's research](https://www.cycfi.com/2018/03/fast-and-efficient-pitch-detection-bitstream-autocorrelation/)
 
 ---
 
