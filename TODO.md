@@ -1,3 +1,3 @@
-[] Use bitstream autocorrelation in real time
-[]  Run bitstream autocorrelation on the microcontroller: https://github.com/cycfi/bitstream_autocorrelation/blob/master/bcf.cpp
-[] Look at the updated algorithm: https://github.com/cycfi/q
+- [ ] Use bitstream autocorrelation in real time
+- [ ]  Run bitstream autocorrelation on the microcontroller: https://github.com/cycfi/bitstream_autocorrelation/blob/master/bcf.cpp
+- [ ] Look at the updated algorithm: https://github.com/cycfi/q
