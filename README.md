@@ -1,4 +1,4 @@
-### TL;DR: We have found that bitstream autocorrelation is the most effective explored method for real-time audio frequency estimation in terms of runtime (< 0.7s) and accuracy (± 2 Hz).
+### TL;DR: we have found that bitstream [autocorrelation](https://en.m.wikipedia.org/wiki/Autocorrelation) is the most effective explored method for real-time audio frequency estimation in terms of runtime (< 0.7s) and accuracy (± 2 Hz).
 
 ### For list of things to do, check TODO.md
 
