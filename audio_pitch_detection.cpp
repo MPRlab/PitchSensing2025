@@ -49,7 +49,7 @@ std::vector<int16_t> getWaveformData(const std::string& filename) {
 }
 
 int main() {
-    std::vector<int16_t> waveform = getWaveformData("plucks_pluck_cropped_116.2Hz_converted.wav");
+    std::vector<int16_t> waveform = getWaveformData("test_pluck.wav");
     if (waveform.empty()) {
         std::cerr << "Failed to load waveform data." << std::endl;
         return -1;
