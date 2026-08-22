@@ -73,6 +73,11 @@ pip install numpy pandas pydub
 | `tables/`           | Output folder where results Excel file will be saved |
 | `frequency_estimator.py`    | Main processing and analysis code          |
 | `bitstream_autocorrelation_genetic_tuning.py` | Genetic algorithm used to tune the autocorrelation algorithm |
+| `firmware/`          | Arduino/C++ port of the bit-autocorrelation method for running on a microcontroller (merged from the former `pitch-sensing-controller` repo) |
+
+## Firmware Port
+
+`firmware/` contains a standalone C++ implementation of the XOR bitstream autocorrelation method for real-time pitch detection on a microcontroller. Build with `make` inside that folder (produces `audio_detect`, which is not checked in).
 
 ---
 

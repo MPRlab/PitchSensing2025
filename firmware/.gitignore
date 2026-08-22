@@ -1,0 +1,3 @@
+*.o
+audio_detect
+audio_pitch_detection
